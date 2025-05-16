@@ -1,49 +1,58 @@
 'use client'
 import { motion } from 'framer-motion'
 
-interface ExperienceItem {
+interface Position {
   title: string
-  company: string
   duration: string
   description: string[]
+}
+
+interface ExperienceItem {
+  company: string
+  overallDuration?: string
+  positions?: Position[]
+  title?: string
+  duration?: string
+  description?: string[]
   technologies: string[]
 }
 
 const experiences: ExperienceItem[] = [
   {
+    company: "Leucine-AI for Pharma",
+    overallDuration: "Dec 2024 - Present",
+    positions: [
+      {
+        title: "Software Engineer",
+        duration: "May 2025 - Present",
+        description: [
+          "Promoted to full-time Software Engineer role",
+          "Currently working on Multi-Industry Application MarketPlace Web Application",
+          "Developing full-stack solutions for pharmaceutical industry clients"
+        ]
+      },
+      {
+        title: "Software Engineer Intern",
+        duration: "Dec 2024 - April 2025",
+        description: [
+          "Worked on backend and frontend of ERP products for pharmaceutical industry",
+          "Contributed to development of critical business applications",
+          "Collaborated with cross-functional teams to deliver projects on time"
+        ]
+      }
+    ],
+    technologies: ["React", "Node.js", "TypeScript", "AWS", "MongoDB", "REST API"]
+  },
+  {
     title: "Web Developer Intern",
     company: "Centre For Development Of Advanced Computing",
-    duration: "March 2020 - Present",
+    duration: "March 2024 - Sept 2024",
     description: [
       "Created and maintained multiple full-stack applications ",
       "Implemented responsive designs and improved site performance",
       "Collaborated with cross-functional teams to deliver projects on time"
     ],
-    technologies: ["React", "Node.js", "AWS", "TypeScript","SQL"]
-  },
-  {
-    title: "UI/UX Design Intern",
-    company: "CareerNaksha Private Limited",
-    duration: "Jan 2024 - May 2024",
-    description: [
-      "Designed and implemented user-friendly interfaces",
-      "Conducted user research and testing to ensure optimal user experience",
-      "Collaborated with cross-functional teams to deliver projects on time"
-    ],
-    technologies: ["UI/UX Design", "Figma", "Adobe XD","User Research","Frontend Development"]
-  },
-
-  // Add more experiences as needed
-  {
-    title: "Technical Executive Intern",
-    company: "Gamayas Private Limited",
-    duration: "May 2023 - July 2023",
-    description: [
-      "Contributed to the development of a web application",
-      "Created Wep and App desgines using Figma",
-      "Collaborated with cross-functional teams to deliver projects on time"
-    ],
-    technologies: ["React", "Frontend Development", "HTML", "CSS","JavaScript"]
+    technologies: ["React", "Node.js", "AWS", "TypeScript", "SQL"]
   }
 ]
 
@@ -107,20 +116,48 @@ const ExperienceSection = () => {
                     <div className="flex justify-between items-center mb-4">
                       <div>
                         <h3 className="text-xl font-bold text-white">
-                          {experience.title}
+                          {experience.positions ? experience.company : experience.title}
                         </h3>
-                        <p className="text-blue-400">{experience.company}</p>
+                        {!experience.positions && <p className="text-blue-400">{experience.company}</p>}
                       </div>
                       <span className="text-gray-400 text-sm">
-                        {experience.duration}
+                        {experience.positions ? experience.overallDuration : experience.duration}
                       </span>
                     </div>
                     
-                    <ul className="list-disc list-inside mb-4 text-gray-300 space-y-2">
-                      {experience.description.map((item, i) => (
-                        <li key={i}>{item}</li>
-                      ))}
-                    </ul>
+                    {experience.positions ? (
+                      <div className="mb-4">
+                        {experience.positions.map((position, posIndex) => (
+                          <div key={posIndex} className={`relative ${posIndex !== 0 ? 'mt-6 pt-6 border-t border-gray-700' : ''}`}>
+                            <div className="flex justify-between items-center mb-2">
+                              <h4 className="text-white font-semibold">
+                                {position.title}
+                                {posIndex === 0 && (
+                                  <span className="ml-2 text-xs px-2 py-1 bg-blue-500/30 text-blue-300 rounded-full">
+                                    Current
+                                  </span>
+                                )}
+                              </h4>
+                              <span className="text-gray-400 text-sm">{position.duration}</span>
+                            </div>
+                            <ul className="list-disc list-inside text-gray-300 space-y-2">
+                              {position.description.map((item, i) => (
+                                <li key={i}>{item}</li>
+                              ))}
+                            </ul>
+                            {posIndex === 0 && (
+                              <div className="absolute -left-3 top-0 h-3 w-3 bg-blue-500 rounded-full"></div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <ul className="list-disc list-inside mb-4 text-gray-300 space-y-2">
+                        {experience.description?.map((item, i) => (
+                          <li key={i}>{item}</li>
+                        ))}
+                      </ul>
+                    )}
                     
                     <div className="flex flex-wrap gap-2">
                       {experience.technologies.map((tech, i) => (
@@ -147,7 +184,7 @@ const ExperienceSection = () => {
           className="text-center mt-16"
         >
           <a
-            href="/resume.pdf"
+            href="https://drive.google.com/file/d/1CSKOnOjC0YiJHHUu9TDGszqNF_uksgkc/view?usp=sharing"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-6 py-3 bg-blue-500/10 text-blue-400 rounded-full hover:bg-blue-500/20 transition-colors border border-blue-500/20"
@@ -177,4 +214,4 @@ const ExperienceSection = () => {
   )
 }
 
-export default ExperienceSection 
+export default ExperienceSection
